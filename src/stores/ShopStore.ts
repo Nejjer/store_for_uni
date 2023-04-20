@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { axiosInstance } from '../axios';
 
-interface IProduct {
+export interface IProduct {
   id: number;
   title: string;
   price: string;
