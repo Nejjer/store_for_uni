@@ -7,6 +7,8 @@ import {
 import { ProductCard } from '../../components/ProductCard';
 import { Container, Stack } from '@mui/material';
 import { Header } from '../../components/Header';
+import { SideMenu } from '../../components/SideMenu';
+import { FilterMenu } from '../../components/FilterMenu';
 
 interface MainProps {}
 
@@ -19,9 +21,13 @@ const Main: FC<MainProps> = (props) => {
   return (
     <Container>
       <Header />
+      <Stack direction={'row'}>
+        <SideMenu />
+        <FilterMenu />
+      </Stack>
       <Stack direction={'column'} spacing={1}>
-        {shopStore.products.map((item) => (
-          <ProductCard {...item} />
+        {shopStore.filteredProduct.map((item) => (
+          <ProductCard key={item.id} {...item} />
         ))}
       </Stack>
     </Container>
