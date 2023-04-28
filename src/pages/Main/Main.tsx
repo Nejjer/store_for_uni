@@ -5,8 +5,7 @@ import {
   StoreCtx,
 } from '../../components/WithStore/WithStore';
 import { ProductCard } from '../../components/ProductCard';
-import Grid2 from '@mui/material/Unstable_Grid2';
-import { Container } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 
 interface MainProps {}
 
@@ -18,13 +17,11 @@ const Main: FC<MainProps> = (props) => {
   const spacing = 8;
   return (
     <Container>
-      <Grid2 container columnSpacing={spacing} rowSpacing={spacing}>
+      <Stack direction={'column'} spacing={1}>
         {shopStore.products.map((item) => (
-          <Grid2 xs={12} sm={6} md={4} lg={3}>
-            <ProductCard {...item} />
-          </Grid2>
+          <ProductCard {...item} />
         ))}
-      </Grid2>
+      </Stack>
     </Container>
   );
 };
