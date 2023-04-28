@@ -5,7 +5,7 @@ import {
   StoreCtx,
 } from '../../components/WithStore/WithStore';
 import { ProductCard } from '../../components/ProductCard';
-import { Container, Stack } from '@mui/material';
+import { Button, Container, Stack } from '@mui/material';
 import { Header } from '../../components/Header';
 import { SideMenu } from '../../components/SideMenu';
 import { FilterMenu } from '../../components/FilterMenu';
@@ -24,6 +24,7 @@ const Main: FC<MainProps> = (props) => {
       <Stack direction={'row'}>
         <SideMenu />
         <FilterMenu />
+        <Button onClick={() => shopStore.clearFilter()}>Очистить фильтр</Button>
       </Stack>
       <Stack direction={'column'} spacing={1}>
         {shopStore.filteredProduct.map((item) => (

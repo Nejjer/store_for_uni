@@ -17,12 +17,12 @@ const SortMenu: FC = (props) => {
   };
 
   return (
-    <div>
+    <>
       <Button onClick={handleClick}>Сортировать</Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem
           onClick={() => {
-            shopStore.sortByName();
+            shopStore.sortField = 'title';
             handleClose();
           }}
         >
@@ -30,14 +30,17 @@ const SortMenu: FC = (props) => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            shopStore.sortByPrice();
+            shopStore.sortField = 'price';
             handleClose();
           }}
         >
           Сортировать по цене
         </MenuItem>
       </Menu>
-    </div>
+      <Button onClick={() => shopStore.revertSort()}>
+        поменять сортировку
+      </Button>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { axiosInstance } from '../axios';
+import { utils } from '../utils/utils';
 
 export interface IProduct {
   id: number;
@@ -13,6 +14,8 @@ export interface IProduct {
 export class ShopStore {
   private allProducts: IProduct[] = [];
   public filteredProduct: IProduct[] = [];
+  private descSort = false;
+  private _sortField: keyof IProduct = 'title';
   public categories: string[] = [];
 
   constructor() {
@@ -26,7 +29,24 @@ export class ShopStore {
     runInAction(() => {
       this.allProducts = response;
       this.filteredProduct = response;
+      this.sort();
     });
+  }
+
+  public clearFilter() {
+    this.filteredProduct = this.allProducts.slice();
+    this.sort();
+  }
+
+  public set sortField(field: keyof IProduct) {
+    this._sortField = field;
+    this.sort();
+  }
+
+  private sort() {
+    this.filteredProduct = this.descSort
+      ? utils.sortDesc(this.filteredProduct.slice(), this._sortField)
+      : utils.sortAsc(this.filteredProduct.slice(), this._sortField);
   }
 
   private async fetchCategories() {
@@ -41,25 +61,11 @@ export class ShopStore {
     this.filteredProduct = this.allProducts.filter(
       (product) => product.category === category
     );
+    this.sort();
   }
 
-  public sortByName() {
-    this.filteredProduct = this.sortDesc(this.allProducts.slice(), 'title');
-  }
-
-  public sortByPrice() {
-    this.filteredProduct = this.sortDesc(this.allProducts.slice(), 'price');
-  }
-
-  private sortDesc<T>(arr: T[], field: keyof T) {
-    return arr.sort(function (a, b) {
-      if (a[field] > b[field]) {
-        return -1;
-      }
-      if (b[field] > a[field]) {
-        return 1;
-      }
-      return 0;
-    });
+  public revertSort() {
+    this.descSort = !this.descSort;
+    this.sort();
   }
 }
