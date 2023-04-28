@@ -6,6 +6,7 @@ import {
 } from '../../components/WithStore/WithStore';
 import { ProductCard } from '../../components/ProductCard';
 import { Container, Stack } from '@mui/material';
+import { Header } from '../../components/Header';
 
 interface MainProps {}
 
@@ -17,6 +18,7 @@ const Main: FC<MainProps> = (props) => {
   const spacing = 8;
   return (
     <Container>
+      <Header />
       <Stack direction={'column'} spacing={1}>
         {shopStore.products.map((item) => (
           <ProductCard {...item} />
