@@ -32,6 +32,11 @@ const FilterMenu: FC = () => {
           </MenuItem>
         ))}
       </Menu>
+      <Button
+        onClick={() => (shopStore.onlyFavorites = !shopStore.onlyFavorites)}
+      >
+        {shopStore.onlyFavorites ? 'Все' : 'Избранные'}
+      </Button>
     </div>
   );
 };

@@ -17,9 +17,11 @@ export class ShopStore {
   private allProducts: IProduct[] = [];
   public filteredProduct: IProduct[] = [];
   private descSort = false;
+  private _onlyFavorites = false;
   private _sortField: keyof IProduct = 'title';
   public categories: string[] = [];
   private _favoriteItems: number[] = [];
+  private filterCategory: string | undefined = undefined;
 
   constructor() {
     this.fetchProduct();
@@ -35,13 +37,17 @@ export class ShopStore {
     runInAction(() => {
       this.allProducts = response;
       this.filteredProduct = response;
-      this.sort();
+      this.applyConstrains();
     });
   }
 
-  public clearFilter() {
-    this.filteredProduct = this.allProducts.slice();
-    this.sort();
+  public set onlyFavorites(flag: boolean) {
+    this._onlyFavorites = flag;
+    this.applyConstrains();
+  }
+
+  public get onlyFavorites() {
+    return this._onlyFavorites;
   }
 
   private set favoriteItems(favorites: number[]) {
@@ -67,13 +73,13 @@ export class ShopStore {
 
   public set sortField(field: keyof IProduct) {
     this._sortField = field;
-    this.sort();
+    this.applyConstrains();
   }
 
-  private sort() {
-    this.filteredProduct = this.descSort
-      ? utils.sortDesc(this.filteredProduct.slice(), this._sortField)
-      : utils.sortAsc(this.filteredProduct.slice(), this._sortField);
+  private sort(array: IProduct[], isDesc: boolean, sortField: keyof IProduct) {
+    return isDesc
+      ? utils.sortDesc(array.slice(), sortField)
+      : utils.sortAsc(array.slice(), sortField);
   }
 
   private async fetchCategories() {
@@ -85,14 +91,30 @@ export class ShopStore {
   }
 
   public filterByCategory(category: string) {
-    this.filteredProduct = this.allProducts.filter(
-      (product) => product.category === category
-    );
-    this.sort();
+    this.filterCategory = category;
+    this.applyConstrains();
+  }
+  public clearFilter() {
+    this.filterCategory = undefined;
+    this.applyConstrains();
   }
 
   public revertSort() {
     this.descSort = !this.descSort;
-    this.sort();
+    this.applyConstrains();
+  }
+
+  private applyConstrains() {
+    let applyingArray = this.allProducts.slice();
+    applyingArray = this.sort(applyingArray, this.descSort, this._sortField);
+    if (this.filterCategory)
+      applyingArray = applyingArray.filter(
+        ({ category }) => category === this.filterCategory
+      );
+    if (this.onlyFavorites)
+      applyingArray = applyingArray.filter(({ id }) =>
+        this.favoriteItems.includes(id)
+      );
+    this.filteredProduct = applyingArray;
   }
 }
