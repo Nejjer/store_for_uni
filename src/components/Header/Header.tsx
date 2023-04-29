@@ -13,6 +13,7 @@ const Header: FC = (props) => {
     <Stack className={classes.container}>
       <div>заголовок</div>
       <div>В избранном: {shopStore.favoriteItems.length}</div>
+      <div>В корзине: {shopStore.cart.length}</div>
     </Stack>
   );
 };

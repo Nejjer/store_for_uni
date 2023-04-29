@@ -12,12 +12,14 @@ export interface IProduct {
 }
 
 const FAVORITE_ITEM_LS_KEY = 'favoriteItem';
+const CART_ITEMS_LS_KEY = 'cart';
 
 export class ShopStore {
   private allProducts: IProduct[] = [];
   public filteredProduct: IProduct[] = [];
   private descSort = false;
   private _onlyFavorites = false;
+  private _cart: IProduct[] = [];
   private _sortField: keyof IProduct = 'title';
   public categories: string[] = [];
   private _favoriteItems: number[] = [];
@@ -29,6 +31,7 @@ export class ShopStore {
     this._favoriteItems = JSON.parse(
       localStorage.getItem(FAVORITE_ITEM_LS_KEY) || '[]'
     );
+    this._cart = JSON.parse(localStorage.getItem(CART_ITEMS_LS_KEY) || '[]');
     makeAutoObservable(this);
   }
 
@@ -58,17 +61,31 @@ export class ShopStore {
     );
   }
 
+  public get favoriteItems(): number[] {
+    return this._favoriteItems;
+  }
+
+  private set cart(products: IProduct[]) {
+    this._cart = [...new Set(products)];
+    localStorage.setItem(CART_ITEMS_LS_KEY, JSON.stringify(products));
+  }
+
+  public get cart() {
+    return this._cart;
+  }
+
   public addToFavorite(id: number) {
     this.favoriteItems.push(id);
     this.favoriteItems = this.favoriteItems.slice();
   }
 
-  public deleteFavorite(id: number) {
-    this.favoriteItems = this.favoriteItems.filter((item) => item !== id);
+  public addToCart(product: IProduct) {
+    this.cart.push(product);
+    this.cart = this.cart.slice();
   }
 
-  public get favoriteItems(): number[] {
-    return this._favoriteItems;
+  public deleteFavorite(id: number) {
+    this.favoriteItems = this.favoriteItems.filter((item) => item !== id);
   }
 
   public set sortField(field: keyof IProduct) {

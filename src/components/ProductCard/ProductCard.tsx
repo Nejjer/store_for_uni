@@ -10,6 +10,7 @@ const ProductCard: FC<IProduct> = ({
   image,
   price,
   id,
+  category,
 }) => {
   const {
     appStore: { shopStore },
@@ -22,6 +23,20 @@ const ProductCard: FC<IProduct> = ({
         <Typography variant={'body2'}>Цена: {price}</Typography>
         <Button onClick={() => shopStore.addToFavorite(id)}>
           Добавить в избранное
+        </Button>
+        <Button
+          onClick={() =>
+            shopStore.addToCart({
+              id,
+              price,
+              image,
+              description,
+              category,
+              title,
+            })
+          }
+        >
+          Добавить в корзину
         </Button>
       </Stack>
     </Paper>
