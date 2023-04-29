@@ -11,16 +11,22 @@ export interface IProduct {
   image: string;
 }
 
+const FAVORITE_ITEM_LS_KEY = 'favoriteItem';
+
 export class ShopStore {
   private allProducts: IProduct[] = [];
   public filteredProduct: IProduct[] = [];
   private descSort = false;
   private _sortField: keyof IProduct = 'title';
   public categories: string[] = [];
+  private _favoriteItems: number[] = [];
 
   constructor() {
     this.fetchProduct();
     this.fetchCategories();
+    this._favoriteItems = JSON.parse(
+      localStorage.getItem(FAVORITE_ITEM_LS_KEY) || '[]'
+    );
     makeAutoObservable(this);
   }
 
@@ -36,6 +42,27 @@ export class ShopStore {
   public clearFilter() {
     this.filteredProduct = this.allProducts.slice();
     this.sort();
+  }
+
+  private set favoriteItems(favorites: number[]) {
+    this._favoriteItems = [...new Set(favorites)];
+    localStorage.setItem(
+      FAVORITE_ITEM_LS_KEY,
+      JSON.stringify(this._favoriteItems)
+    );
+  }
+
+  public addToFavorite(id: number) {
+    this.favoriteItems.push(id);
+    this.favoriteItems = this.favoriteItems.slice();
+  }
+
+  public deleteFavorite(id: number) {
+    this.favoriteItems = this.favoriteItems.filter((item) => item !== id);
+  }
+
+  public get favoriteItems(): number[] {
+    return this._favoriteItems;
   }
 
   public set sortField(field: keyof IProduct) {
