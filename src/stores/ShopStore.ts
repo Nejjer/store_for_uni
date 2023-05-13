@@ -19,7 +19,7 @@ export class ShopStore {
   public filteredProduct: IProduct[] = [];
   private descSort = false;
   private _onlyFavorites = false;
-  private _cart: IProduct[] = [];
+  private _cart: number[] = [];
   private _sortField: keyof IProduct = 'title';
   public categories: string[] = [];
   private _favoriteItems: number[] = [];
@@ -65,9 +65,9 @@ export class ShopStore {
     return this._favoriteItems;
   }
 
-  private set cart(products: IProduct[]) {
-    this._cart = [...new Set(products)];
-    localStorage.setItem(CART_ITEMS_LS_KEY, JSON.stringify(products));
+  private set cart(ids: number[]) {
+    this._cart = [...new Set(ids)];
+    localStorage.setItem(CART_ITEMS_LS_KEY, JSON.stringify(ids));
   }
 
   public get cart() {
@@ -79,9 +79,17 @@ export class ShopStore {
     this.favoriteItems = this.favoriteItems.slice();
   }
 
-  public addToCart(product: IProduct) {
-    this.cart.push(product);
+  public addToCart(id: number) {
+    this.cart.push(id);
     this.cart = this.cart.slice();
+  }
+
+  public removeFromCart(id: number) {
+    this.cart = this.cart.filter((cartId) => cartId !== id);
+  }
+
+  public isContainInCard(id: number) {
+    return this._cart.includes(id);
   }
 
   public deleteFavorite(id: number) {
