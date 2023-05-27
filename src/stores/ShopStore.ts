@@ -27,13 +27,13 @@ export class ShopStore {
   private _cart: ICartItem[] = [];
   private _sortField: keyof IProduct = 'title';
   public categories: string[] = [];
-  private _favoriteItems: number[] = [];
+  private _favoriteIds: number[] = [];
   private _filterCategory: string | undefined = undefined;
 
   constructor() {
     this.fetchProduct();
     this.fetchCategories();
-    this._favoriteItems = JSON.parse(
+    this._favoriteIds = JSON.parse(
       localStorage.getItem(FAVORITE_ITEM_LS_KEY) || '[]'
     );
     this._cart = JSON.parse(localStorage.getItem(CART_ITEMS_LS_KEY) || '[]');
@@ -66,16 +66,22 @@ export class ShopStore {
     return this._onlyFavorites;
   }
 
-  private set favoriteItems(favorites: number[]) {
-    this._favoriteItems = [...new Set(favorites)];
+  private set favoriteIds(favorites: number[]) {
+    this._favoriteIds = [...new Set(favorites)];
     localStorage.setItem(
       FAVORITE_ITEM_LS_KEY,
-      JSON.stringify(this._favoriteItems)
+      JSON.stringify(this._favoriteIds)
     );
   }
 
-  public get favoriteItems(): number[] {
-    return this._favoriteItems;
+  public get favoriteIds(): number[] {
+    return this._favoriteIds;
+  }
+
+  public get favoriteProducts(): IProduct[] {
+    return this.allProducts.filter((item) =>
+      this.favoriteIds.includes(item.id)
+    );
   }
 
   private set cart(cards: ICartItem[]) {
@@ -107,8 +113,8 @@ export class ShopStore {
   }
 
   public addToFavorite(id: number) {
-    this.favoriteItems.push(id);
-    this.favoriteItems = this.favoriteItems.slice();
+    this.favoriteIds.push(id);
+    this.favoriteIds = this.favoriteIds.slice();
   }
 
   public addToCart(id: number) {
@@ -139,7 +145,7 @@ export class ShopStore {
   }
 
   public deleteFavorite(id: number) {
-    this.favoriteItems = this.favoriteItems.filter((item) => item !== id);
+    this.favoriteIds = this.favoriteIds.filter((item) => item !== id);
   }
 
   public set sortField(field: keyof IProduct) {
@@ -188,7 +194,7 @@ export class ShopStore {
       );
     if (this.onlyFavorites)
       applyingArray = applyingArray.filter(({ id }) =>
-        this.favoriteItems.includes(id)
+        this.favoriteIds.includes(id)
       );
     this.filteredProduct = applyingArray;
   }

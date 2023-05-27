@@ -6,13 +6,17 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import GradeIcon from '@mui/icons-material/Grade';
 import { CartModal } from '../CartModal';
 import classes from './styles.module.scss';
+import { FavoriteModal } from '../FavoriteModal';
 
 const Header: FC = (props) => {
   const {
     appStore: { shopStore },
   } = useContext<AppStoreContext>(StoreCtx);
   const theme = useTheme();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorElForCart, setAnchorElForCart] =
+    React.useState<null | HTMLElement>(null);
+  const [anchorElForFavorite, setAnchorElForFavorite] =
+    React.useState<null | HTMLElement>(null);
 
   return (
     <Box
@@ -29,19 +33,25 @@ const Header: FC = (props) => {
           justifyContent={'flex-end'}
         >
           <CartModal
-            open={!!anchorEl}
-            anchorEl={anchorEl}
-            onClose={() => setAnchorEl(null)}
+            open={!!anchorElForCart}
+            anchorEl={anchorElForCart}
+            onClose={() => setAnchorElForCart(null)}
+          />
+          <FavoriteModal
+            open={!!anchorElForFavorite}
+            anchorEl={anchorElForFavorite}
+            onClose={() => setAnchorElForFavorite(null)}
           />
           <Badge
-            badgeContent={shopStore.favoriteItems.length}
+            badgeContent={shopStore.favoriteIds.length}
             color={'primary'}
             className={classes.badge}
+            onClick={(e) => setAnchorElForFavorite(e.currentTarget)}
           >
             <GradeIcon sx={{ fontSize: 50 }} fontSize={'large'} />
           </Badge>
           <Badge
-            onClick={(e) => setAnchorEl(e.currentTarget)}
+            onClick={(e) => setAnchorElForCart(e.currentTarget)}
             badgeContent={shopStore.countItemsInCart}
             color={'primary'}
             className={classes.badge}

@@ -24,6 +24,7 @@ const SortMenu: FC = (props) => {
           variant={'contained'}
           onClick={handleClick}
           sx={{ borderBottomRightRadius: 0, borderTopRightRadius: 0 }}
+          fullWidth
         >
           Сортировать по {shopStore.sortField == 'title' ? 'алфавиту' : 'цене'}
         </Button>

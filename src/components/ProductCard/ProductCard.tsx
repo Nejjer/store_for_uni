@@ -60,7 +60,7 @@ const ProductCard: FC<IProduct> = ({ title, image, price, id }) => {
           width={120}
           height={120}
           onClick={() => {
-            if (!shopStore.favoriteItems.includes(id)) {
+            if (!shopStore.favoriteIds.includes(id)) {
               shopStore.addToFavorite(id);
             } else {
               shopStore.deleteFavorite(id);
@@ -70,7 +70,7 @@ const ProductCard: FC<IProduct> = ({ title, image, price, id }) => {
         >
           <img src={image} alt={id.toString()} style={imgStyle} />
           <img
-            src={shopStore.favoriteItems.includes(id) ? RemoveStarImg : StarImg}
+            src={shopStore.favoriteIds.includes(id) ? RemoveStarImg : StarImg}
             alt={id.toString()}
             className={classes.img__star}
           />
