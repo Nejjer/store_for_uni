@@ -31,7 +31,7 @@ const FavoriteModal: FC<FavoriteModalProps> = ({ anchorEl, onClose, open }) => {
         }}
       >
         {shopStore.favoriteProducts.map((item) => (
-          <ProductCard {...item} />
+          <ProductCard key={item.id} {...item} />
         ))}
       </Paper>
     </Popover>

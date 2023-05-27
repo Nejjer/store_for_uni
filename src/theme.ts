@@ -37,6 +37,14 @@ export const Theme = createTheme({
         },
       },
     },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          transform: 'none',
+          borderRadius: BORDER_RADIUS.normal,
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

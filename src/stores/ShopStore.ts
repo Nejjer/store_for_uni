@@ -29,6 +29,7 @@ export class ShopStore {
   public categories: string[] = [];
   private _favoriteIds: number[] = [];
   private _filterCategory: string | undefined = undefined;
+  private _loading: boolean = false;
 
   constructor() {
     this.fetchProduct();
@@ -49,12 +50,20 @@ export class ShopStore {
   }
 
   private async fetchProduct() {
+    runInAction(() => {
+      this._loading = true;
+    });
     const response = (await axiosInstance.get<IProduct[]>('products')).data;
     runInAction(() => {
       this.allProducts = response;
       this.filteredProduct = response;
+      this._loading = false;
       this.applyConstrains();
     });
+  }
+
+  public get loading() {
+    return this._loading;
   }
 
   public set onlyFavorites(flag: boolean) {

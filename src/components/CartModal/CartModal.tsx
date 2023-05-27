@@ -41,7 +41,7 @@ const CartModal: FC<CartModalProps> = ({ open, anchorEl, onClose }) => {
         <Stack spacing={2}>
           <Stack maxWidth={600} spacing={2}>
             {shopStore.cartItems.map((item) => (
-              <ProductCard {...item} />
+              <ProductCard key={item.id} {...item} />
             ))}
           </Stack>
           <Divider />
