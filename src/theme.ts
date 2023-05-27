@@ -27,6 +27,15 @@ export const Theme = createTheme({
         },
       },
     },
+    MuiMenu: {
+      styleOverrides: {
+        root: {
+          '& .MuiPaper-root': {
+            backgroundColor: '#D1D0FB',
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
