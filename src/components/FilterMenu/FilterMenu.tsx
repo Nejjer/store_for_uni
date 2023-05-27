@@ -17,8 +17,10 @@ const FilterMenu: FC = () => {
   };
 
   return (
-    <div>
-      <Button onClick={handleClick}>Фильтр</Button>
+    <>
+      <Button variant={'contained'} onClick={handleClick}>
+        {shopStore.filterCategory ? shopStore.filterCategory : 'Фильтр'}
+      </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {shopStore.categories.map((category) => (
           <MenuItem
@@ -32,12 +34,16 @@ const FilterMenu: FC = () => {
           </MenuItem>
         ))}
       </Menu>
+      <Button variant={'contained'} onClick={() => shopStore.clearFilter()}>
+        Очистить фильтр
+      </Button>
       <Button
+        variant={'contained'}
         onClick={() => (shopStore.onlyFavorites = !shopStore.onlyFavorites)}
       >
         {shopStore.onlyFavorites ? 'Все' : 'Избранные'}
       </Button>
-    </div>
+    </>
   );
 };
 

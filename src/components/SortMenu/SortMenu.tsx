@@ -18,7 +18,9 @@ const SortMenu: FC = (props) => {
 
   return (
     <>
-      <Button onClick={handleClick}>Сортировать</Button>
+      <Button variant={'contained'} onClick={handleClick}>
+        Сортировать
+      </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem
           onClick={() => {
@@ -37,12 +39,14 @@ const SortMenu: FC = (props) => {
           Сортировать по цене
         </MenuItem>
       </Menu>
-      <Button onClick={() => shopStore.revertSort()}>
-        поменять сортировку
+      <Button variant={'contained'} onClick={() => shopStore.revertSort()}>
+        {shopStore.descSort
+          ? 'Сортировать по возрастанию'
+          : 'Сортировать по убыванию'}
       </Button>
     </>
   );
 };
 
 const connected = observer(SortMenu);
-export { connected as SideMenu };
+export { connected as SortMenu };

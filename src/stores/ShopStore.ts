@@ -22,13 +22,13 @@ const CART_ITEMS_LS_KEY = 'cart';
 export class ShopStore {
   private allProducts: IProduct[] = [];
   public filteredProduct: IProduct[] = [];
-  private descSort = false;
+  private _descSort = false;
   private _onlyFavorites = false;
   private _cart: ICartItem[] = [];
   private _sortField: keyof IProduct = 'title';
   public categories: string[] = [];
   private _favoriteItems: number[] = [];
-  private filterCategory: string | undefined = undefined;
+  private _filterCategory: string | undefined = undefined;
 
   constructor() {
     this.fetchProduct();
@@ -38,6 +38,14 @@ export class ShopStore {
     );
     this._cart = JSON.parse(localStorage.getItem(CART_ITEMS_LS_KEY) || '[]');
     makeAutoObservable(this);
+  }
+
+  public get descSort() {
+    return this._descSort;
+  }
+
+  public get filterCategory() {
+    return this._filterCategory;
   }
 
   private async fetchProduct() {
@@ -135,25 +143,25 @@ export class ShopStore {
   }
 
   public filterByCategory(category: string) {
-    this.filterCategory = category;
+    this._filterCategory = category;
     this.applyConstrains();
   }
   public clearFilter() {
-    this.filterCategory = undefined;
+    this._filterCategory = undefined;
     this.applyConstrains();
   }
 
   public revertSort() {
-    this.descSort = !this.descSort;
+    this._descSort = !this._descSort;
     this.applyConstrains();
   }
 
   private applyConstrains() {
     let applyingArray = this.allProducts.slice();
-    applyingArray = this.sort(applyingArray, this.descSort, this._sortField);
-    if (this.filterCategory)
+    applyingArray = this.sort(applyingArray, this._descSort, this._sortField);
+    if (this._filterCategory)
       applyingArray = applyingArray.filter(
-        ({ category }) => category === this.filterCategory
+        ({ category }) => category === this._filterCategory
       );
     if (this.onlyFavorites)
       applyingArray = applyingArray.filter(({ id }) =>

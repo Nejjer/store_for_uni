@@ -8,14 +8,7 @@ import classes from './styles.module.scss';
 import StarImg from './img/start.svg';
 import RemoveStarImg from './img/removeStar.svg';
 
-const ProductCard: FC<IProduct> = ({
-  title,
-  description,
-  image,
-  price,
-  id,
-  category,
-}) => {
+const ProductCard: FC<IProduct> = ({ title, image, price, id }) => {
   const {
     appStore: { shopStore },
   } = useContext<AppStoreContext>(StoreCtx);
