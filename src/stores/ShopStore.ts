@@ -11,6 +11,11 @@ export interface IProduct {
   image: string;
 }
 
+export interface ICartItem {
+  id: number;
+  count: number;
+}
+
 const FAVORITE_ITEM_LS_KEY = 'favoriteItem';
 const CART_ITEMS_LS_KEY = 'cart';
 
@@ -19,7 +24,7 @@ export class ShopStore {
   public filteredProduct: IProduct[] = [];
   private descSort = false;
   private _onlyFavorites = false;
-  private _cart: number[] = [];
+  private _cart: ICartItem[] = [];
   private _sortField: keyof IProduct = 'title';
   public categories: string[] = [];
   private _favoriteItems: number[] = [];
@@ -65,9 +70,9 @@ export class ShopStore {
     return this._favoriteItems;
   }
 
-  private set cart(ids: number[]) {
-    this._cart = [...new Set(ids)];
-    localStorage.setItem(CART_ITEMS_LS_KEY, JSON.stringify(ids));
+  private set cart(cards: ICartItem[]) {
+    this._cart = [...new Set(cards)];
+    localStorage.setItem(CART_ITEMS_LS_KEY, JSON.stringify(cards));
   }
 
   public get cart() {
@@ -80,16 +85,30 @@ export class ShopStore {
   }
 
   public addToCart(id: number) {
-    this.cart.push(id);
+    const cartItem = this.cart.findIndex((item) => item.id === id);
+    if (cartItem !== -1) {
+      this.cart[cartItem].count++;
+    } else {
+      this.cart.push({ count: 1, id });
+    }
     this.cart = this.cart.slice();
   }
 
   public removeFromCart(id: number) {
-    this.cart = this.cart.filter((cartId) => cartId !== id);
+    const cartItem = this.getItemFromCart(id);
+    if (cartItem && cartItem.count === 1) {
+      this.cart = this.cart.filter((cart) => cart.id !== id);
+    } else {
+      cartItem && cartItem.count--;
+    }
   }
 
   public isContainInCard(id: number) {
-    return this._cart.includes(id);
+    return !!this._cart.find((item) => item.id === id);
+  }
+
+  public getItemFromCart(id: number) {
+    return this.cart.find((item) => item.id === id);
   }
 
   public deleteFavorite(id: number) {

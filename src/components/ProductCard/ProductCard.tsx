@@ -42,7 +42,7 @@ const ProductCard: FC<IProduct> = ({
             </Button>
             <Stack justifyContent={'center'} alignItems={'center'}>
               <Typography variant={'h4'} width={40} textAlign={'center'}>
-                {id}
+                {shopStore.getItemFromCart(id)?.count}
               </Typography>
             </Stack>
             <Button
@@ -82,7 +82,7 @@ const ProductCard: FC<IProduct> = ({
             className={classes.img__star}
           />
         </Box>
-        <Stack justifyContent={'space-between'}>
+        <Stack justifyContent={'space-between'} flexGrow={1}>
           <Typography variant={'h4'}>{title}</Typography>
           <Stack
             direction={'row'}
@@ -98,26 +98,6 @@ const ProductCard: FC<IProduct> = ({
     </Paper>
   );
 };
+
 const connected = observer(ProductCard);
 export { connected as ProductCard };
-// <Stack spacing={2}>
-//     <Typography variant={'h5'}>{title}</Typography>
-//     <Typography variant={'body2'}>Цена: {price}</Typography>
-//     <Button onClick={() => shopStore.addToFavorite(id)}>
-//         Добавить в избранное
-//     </Button>
-//     <Button
-//         onClick={() =>
-//             shopStore.addToCart({
-//                 id,
-//                 price,
-//                 image,
-//                 description,
-//                 category,
-//                 title,
-//             })
-//         }
-//     >
-//         Добавить в корзину
-//     </Button>
-// </Stack>
