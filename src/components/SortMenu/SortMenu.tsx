@@ -1,7 +1,8 @@
 import React, { FC, useContext } from 'react';
 import { observer } from 'mobx-react';
 import { AppStoreContext, StoreCtx } from '../WithStore/WithStore';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Button, Menu, MenuItem, Stack } from '@mui/material';
+import SortIcon from '@mui/icons-material/Sort';
 
 const SortMenu: FC = (props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -18,9 +19,24 @@ const SortMenu: FC = (props) => {
 
   return (
     <>
-      <Button variant={'contained'} onClick={handleClick}>
-        Сортировать
-      </Button>
+      <Stack direction={'row'} spacing={0.5}>
+        <Button
+          variant={'contained'}
+          onClick={handleClick}
+          sx={{ borderBottomRightRadius: 0, borderTopRightRadius: 0 }}
+        >
+          Сортировать по {shopStore.sortField == 'title' ? 'алфавиту' : 'цене'}
+        </Button>
+        <Button
+          variant={'contained'}
+          onClick={() => shopStore.revertSort()}
+          sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+        >
+          <SortIcon
+            sx={{ transform: shopStore.descSort ? 'scale(1, -1)' : undefined }}
+          />
+        </Button>
+      </Stack>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem
           onClick={() => {
@@ -39,11 +55,6 @@ const SortMenu: FC = (props) => {
           Сортировать по цене
         </MenuItem>
       </Menu>
-      <Button variant={'contained'} onClick={() => shopStore.revertSort()}>
-        {shopStore.descSort
-          ? 'Сортировать по возрастанию'
-          : 'Сортировать по убыванию'}
-      </Button>
     </>
   );
 };

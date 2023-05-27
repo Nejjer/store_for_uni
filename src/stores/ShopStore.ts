@@ -147,6 +147,10 @@ export class ShopStore {
     this.applyConstrains();
   }
 
+  public get sortField() {
+    return this._sortField;
+  }
+
   private sort(array: IProduct[], isDesc: boolean, sortField: keyof IProduct) {
     return isDesc
       ? utils.sortDesc(array.slice(), sortField)

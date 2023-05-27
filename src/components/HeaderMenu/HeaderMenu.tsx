@@ -9,7 +9,7 @@ interface HeaderMenuProps {}
 const HeaderMenu: FC<HeaderMenuProps> = (props) => {
   return (
     <Paper sx={{ padding: 2 }}>
-      <Stack spacing={2} direction={'row'}>
+      <Stack spacing={2} direction={{ md: 'row', sx: 'column' }}>
         <SortMenu />
         <FilterMenu />
       </Stack>
