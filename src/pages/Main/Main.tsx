@@ -9,6 +9,7 @@ import { Button, Container, Stack } from '@mui/material';
 import { Header } from '../../components/Header';
 import { SideMenu } from '../../components/SideMenu';
 import { FilterMenu } from '../../components/FilterMenu';
+import Grid2 from '@mui/material/Unstable_Grid2';
 
 interface MainProps {}
 
@@ -26,11 +27,13 @@ const Main: FC<MainProps> = (props) => {
         <FilterMenu />
         <Button onClick={() => shopStore.clearFilter()}>Очистить фильтр</Button>
       </Stack>
-      <Stack direction={'column'} spacing={1}>
+      <Grid2 container spacing={2}>
         {shopStore.filteredProduct.map((item) => (
-          <ProductCard key={item.id} {...item} />
+          <Grid2 xs={12} sm={12} md={6} key={item.id}>
+            <ProductCard {...item} />
+          </Grid2>
         ))}
-      </Stack>
+      </Grid2>
     </Container>
   );
 };

@@ -61,7 +61,7 @@ const ProductCard: FC<IProduct> = ({
   const imgStyle = { width: 120, height: 120, borderRadius: BORDER_RADIUS.min };
 
   return (
-    <Paper sx={{ padding: 2, width: 360 }}>
+    <Paper sx={{ padding: 2 }}>
       <Stack spacing={2} direction={'row'}>
         <Box
           width={120}
