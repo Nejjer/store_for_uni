@@ -4,12 +4,16 @@ import { AppStoreContext, StoreCtx } from '../WithStore/WithStore';
 import { Badge, Box, Container, Stack, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import GradeIcon from '@mui/icons-material/Grade';
+import { CartModal } from '../CartModal';
+import classes from './styles.module.scss';
 
 const Header: FC = (props) => {
   const {
     appStore: { shopStore },
   } = useContext<AppStoreContext>(StoreCtx);
   const theme = useTheme();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
   return (
     <Box
       sx={{
@@ -21,17 +25,33 @@ const Header: FC = (props) => {
         <Stack
           padding={2}
           direction={'row'}
-          spacing={2}
+          spacing={3}
           justifyContent={'flex-end'}
         >
+          <CartModal
+            open={!!anchorEl}
+            anchorEl={anchorEl}
+            onClose={() => setAnchorEl(null)}
+          />
           <Badge
             badgeContent={shopStore.favoriteItems.length}
             color={'primary'}
+            className={classes.badge}
           >
-            <GradeIcon fontSize={'large'} />
+            <GradeIcon sx={{ fontSize: 50 }} fontSize={'large'} />
           </Badge>
-          <Badge badgeContent={shopStore.cart.length} color={'primary'}>
-            <ShoppingCartIcon fontSize={'large'} />
+          <Badge
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            badgeContent={shopStore.countItemsInCart}
+            color={'primary'}
+            className={classes.badge}
+          >
+            <ShoppingCartIcon sx={{ fontSize: 50 }} />
+            {shopStore.totalCartPrice ? (
+              <div className={classes.priceBadge}>
+                {shopStore.totalCartPrice}&nbsp;$
+              </div>
+            ) : null}
           </Badge>
         </Stack>
       </Container>

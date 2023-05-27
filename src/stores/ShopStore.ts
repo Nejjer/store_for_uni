@@ -5,7 +5,7 @@ import { utils } from '../utils/utils';
 export interface IProduct {
   id: number;
   title: string;
-  price: string;
+  price: number;
   category: string;
   description: string;
   image: string;
@@ -85,6 +85,25 @@ export class ShopStore {
 
   public get cart() {
     return this._cart;
+  }
+
+  public get countItemsInCart() {
+    return this.cart.reduce((acc, item) => acc + item.count, 0);
+  }
+
+  public get cartItems() {
+    return this.allProducts.filter((product) =>
+      this.cart.find((cartItem) => cartItem.id === product.id)
+    );
+  }
+
+  public get totalCartPrice() {
+    return this.cart
+      .reduce((acc, cartItem) => {
+        const item = this.allProducts.find((item) => item.id === cartItem.id);
+        return acc + (item ? item.price : 0) * cartItem.count;
+      }, 0)
+      .toFixed(2);
   }
 
   public addToFavorite(id: number) {

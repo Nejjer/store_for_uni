@@ -10,6 +10,7 @@ export const Theme = createTheme({
   palette: {
     background: {
       paper: '#B4EBFB',
+      default: '#ecf1f4',
     },
     action: {
       active: '#fff',

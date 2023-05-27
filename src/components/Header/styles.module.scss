@@ -1,0 +1,14 @@
+.priceBadge {
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  font-size: 0.9rem;
+  border-radius: 1em;
+  padding: 2px 5px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: #d1d0fb;
+}
+.badge {
+  cursor: pointer;
+}
