@@ -18,19 +18,21 @@ const Main: FC<MainProps> = () => {
   } = useContext<AppStoreContext>(StoreCtx);
 
   return (
-    <Container>
+    <>
       <Header />
-      <Stack spacing={2}>
-        <HeaderMenu />
-        <Grid2 container spacing={2}>
-          {shopStore.filteredProduct.map((item) => (
-            <Grid2 xs={12} sm={12} md={6} key={item.id}>
-              <ProductCard {...item} />
-            </Grid2>
-          ))}
-        </Grid2>
-      </Stack>
-    </Container>
+      <Container>
+        <Stack spacing={2}>
+          <HeaderMenu />
+          <Grid2 container spacing={2}>
+            {shopStore.filteredProduct.map((item) => (
+              <Grid2 xs={12} sm={12} md={6} key={item.id}>
+                <ProductCard {...item} />
+              </Grid2>
+            ))}
+          </Grid2>
+        </Stack>
+      </Container>
+    </>
   );
 };
 

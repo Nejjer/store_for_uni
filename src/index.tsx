@@ -5,6 +5,7 @@ import { Main } from './pages/Main';
 import { WithStore } from './components/WithStore/WithStore';
 import { ThemeProvider } from '@mui/material';
 import { Theme } from './theme';
+import './style.module.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <BrowserRouter>
