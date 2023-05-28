@@ -32,16 +32,20 @@ const Header: FC = (props) => {
           spacing={3}
           justifyContent={'flex-end'}
         >
-          <CartModal
-            open={!!anchorElForCart}
-            anchorEl={anchorElForCart}
-            onClose={() => setAnchorElForCart(null)}
-          />
-          <FavoriteModal
-            open={!!anchorElForFavorite}
-            anchorEl={anchorElForFavorite}
-            onClose={() => setAnchorElForFavorite(null)}
-          />
+          {shopStore.cart.length !== 0 && (
+            <CartModal
+              open={!!anchorElForCart}
+              anchorEl={anchorElForCart}
+              onClose={() => setAnchorElForCart(null)}
+            />
+          )}
+          {shopStore.favoriteIds.length !== 0 && (
+            <FavoriteModal
+              open={!!anchorElForFavorite}
+              anchorEl={anchorElForFavorite}
+              onClose={() => setAnchorElForFavorite(null)}
+            />
+          )}
           <Badge
             badgeContent={shopStore.favoriteIds.length}
             color={'primary'}
