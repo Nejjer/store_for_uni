@@ -72,7 +72,7 @@ const ProductPageModal: FC = () => {
         return (
           product && (
             <Paper sx={{ padding: 5 }}>
-              <Stack spacing={4} direction={'row'}>
+              <Stack spacing={4} direction={{ sm: 'row' }}>
                 <Box flexBasis={'40%'}>
                   <img
                     src={product.image}
