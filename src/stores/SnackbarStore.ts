@@ -2,8 +2,8 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 export const SNACKBAR_DELAY = 4000;
 export class SnackbarStore {
-  private isOpen: boolean;
-  private message: string;
+  public isOpen: boolean;
+  public message: string;
 
   constructor() {
     this.isOpen = false;
