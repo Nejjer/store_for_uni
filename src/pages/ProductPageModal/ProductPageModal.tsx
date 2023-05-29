@@ -33,7 +33,7 @@ const ProductPageModal: FC = () => {
   const renderSkeleton = useCallback(
     () => (
       <Paper sx={{ padding: 5 }}>
-        <Stack direction={'row'} spacing={4}>
+        <Stack direction={{ sm: 'row' }} spacing={{ xs: 4 }}>
           <Box flexBasis={'40%'}>
             <Skeleton width={'100%'} height={280} />
           </Box>
