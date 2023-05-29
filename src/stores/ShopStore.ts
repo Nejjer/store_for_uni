@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { axiosInstance } from '../axios';
 import { utils } from '../utils/utils';
+import { productApi } from '../api/ProductAPI';
 
 export interface IProduct {
   id: number;
@@ -9,6 +10,13 @@ export interface IProduct {
   category: string;
   description: string;
   image: string;
+}
+
+export interface IProductDetailed extends IProduct {
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 export interface ICartItem {
@@ -57,7 +65,7 @@ export class ShopStore {
     runInAction(() => {
       this._loading = true;
     });
-    const response = (await axiosInstance.get<IProduct[]>('products')).data;
+    const response = await productApi.getAllProduct();
     runInAction(() => {
       this.allProducts = response;
       this.filteredProduct = response;

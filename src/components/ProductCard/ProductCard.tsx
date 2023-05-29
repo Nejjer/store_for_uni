@@ -1,5 +1,5 @@
-import React, { FC, useCallback, useContext } from 'react';
-import { Box, Button, Paper, Stack, Typography } from '@mui/material';
+import React, { FC, useContext } from 'react';
+import { Box, Paper, Stack, Typography } from '@mui/material';
 import { IProduct } from '../../stores/ShopStore';
 import { observer } from 'mobx-react';
 import { AppStoreContext, StoreCtx } from '../WithStore/WithStore';
@@ -8,6 +8,7 @@ import classes from './styles.module.scss';
 import StarImg from './img/start.svg';
 import RemoveStarImg from './img/removeStar.svg';
 import { useNavigate } from 'react-router-dom';
+import { BuyButton } from '../BuyButton';
 
 const ProductCard: FC<IProduct> = ({ title, image, price, id }) => {
   const {
@@ -15,44 +16,6 @@ const ProductCard: FC<IProduct> = ({ title, image, price, id }) => {
   } = useContext<AppStoreContext>(StoreCtx);
 
   const navigate = useNavigate();
-
-  const renderBtn = useCallback(() => {
-    return (
-      <>
-        {!shopStore.isContainInCard(id) ? (
-          <Button
-            variant={'contained'}
-            onClick={() => shopStore.addToCart(id)}
-            sx={{ width: 120 }}
-          >
-            <Typography variant={'h4'}>купить</Typography>
-          </Button>
-        ) : (
-          <Stack direction={'row'}>
-            <Button
-              variant={'contained'}
-              onClick={() => shopStore.removeFromCart(id)}
-              sx={{ width: 40, minWidth: 40 }}
-            >
-              <Typography variant={'h3'}>-</Typography>
-            </Button>
-            <Stack justifyContent={'center'} alignItems={'center'}>
-              <Typography variant={'h4'} width={40} textAlign={'center'}>
-                {shopStore.getItemFromCart(id)?.count}
-              </Typography>
-            </Stack>
-            <Button
-              variant={'contained'}
-              onClick={() => shopStore.addToCart(id)}
-              sx={{ width: 40, minWidth: 40 }}
-            >
-              <Typography variant={'h3'}>+</Typography>
-            </Button>
-          </Stack>
-        )}
-      </>
-    );
-  }, [id, shopStore.cart, shopStore]);
 
   const imgStyle = { width: 120, height: 120, borderRadius: BORDER_RADIUS.min };
 
@@ -93,7 +56,7 @@ const ProductCard: FC<IProduct> = ({ title, image, price, id }) => {
             alignSelf={'end'}
           >
             <Typography variant={'h4'}>{price} $</Typography>
-            {renderBtn()}
+            <BuyButton productId={id} />
           </Stack>
         </Stack>
       </Stack>
