@@ -1,5 +1,5 @@
 import React, { FC, useContext } from 'react';
-import { Paper, Popover, useTheme } from '@mui/material';
+import { Paper, Popover, Stack, useTheme } from '@mui/material';
 import { observer } from 'mobx-react';
 import { AppStoreContext, StoreCtx } from '../WithStore/WithStore';
 import { ProductCard } from '../ProductCard';
@@ -30,9 +30,11 @@ const FavoriteModal: FC<FavoriteModalProps> = ({ anchorEl, onClose, open }) => {
           padding: 2,
         }}
       >
-        {shopStore.favoriteProducts.map((item) => (
-          <ProductCard key={item.id} {...item} />
-        ))}
+        <Stack spacing={2}>
+          {shopStore.favoriteProducts.map((item) => (
+            <ProductCard key={item.id} {...item} />
+          ))}
+        </Stack>
       </Paper>
     </Popover>
   );
