@@ -1,1 +1,1 @@
-export {CartModal} from './CartModal'
+export { CartModal } from './CartModal';

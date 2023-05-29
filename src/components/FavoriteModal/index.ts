@@ -1,1 +1,1 @@
-export {FavoriteModal} from './FavoriteModal'
+export { FavoriteModal } from './FavoriteModal';
