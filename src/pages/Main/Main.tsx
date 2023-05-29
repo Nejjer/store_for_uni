@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 import { observer } from 'mobx-react';
 import {
   AppStoreContext,
@@ -9,6 +9,7 @@ import { Container, Skeleton, Stack } from '@mui/material';
 import { Header } from '../../components/Header';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { HeaderMenu } from '../../components/HeaderMenu';
+import { ProductPageModal } from '../ProductPageModal';
 
 interface MainProps {}
 
@@ -17,10 +18,18 @@ const Main: FC<MainProps> = () => {
     appStore: { shopStore },
   } = useContext<AppStoreContext>(StoreCtx);
 
-  console.log(shopStore.loading);
+  const renderSkeleton = useCallback(
+    () => (
+      <Grid2 xs={12} sm={12} md={6}>
+        <Skeleton height={152} />
+      </Grid2>
+    ),
+    []
+  );
 
   return (
     <>
+      <ProductPageModal />
       <Header />
       <Container>
         <Stack spacing={2}>
@@ -32,11 +41,7 @@ const Main: FC<MainProps> = () => {
                     <ProductCard {...item} />
                   </Grid2>
                 ))
-              : [1, 2, 4, 5, 6, 7, 8, 9, 10].map((_) => (
-                  <Grid2 xs={12} sm={12} md={6} key={_}>
-                    <Skeleton height={152} />
-                  </Grid2>
-                ))}
+              : new Array(20).fill(renderSkeleton())}
           </Grid2>
         </Stack>
       </Container>

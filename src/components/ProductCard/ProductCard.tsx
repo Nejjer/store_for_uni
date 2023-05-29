@@ -7,11 +7,14 @@ import { BORDER_RADIUS } from '../../theme';
 import classes from './styles.module.scss';
 import StarImg from './img/start.svg';
 import RemoveStarImg from './img/removeStar.svg';
+import { useNavigate } from 'react-router-dom';
 
 const ProductCard: FC<IProduct> = ({ title, image, price, id }) => {
   const {
     appStore: { shopStore },
   } = useContext<AppStoreContext>(StoreCtx);
+
+  const navigate = useNavigate();
 
   const renderBtn = useCallback(() => {
     return (
@@ -76,7 +79,13 @@ const ProductCard: FC<IProduct> = ({ title, image, price, id }) => {
           />
         </Box>
         <Stack justifyContent={'space-between'} flexGrow={1}>
-          <Typography variant={'h4'}>{title}</Typography>
+          <Typography
+            variant={'h4'}
+            onClick={() => navigate(`/?productId=${id.toString()}`)}
+            className={classes.title}
+          >
+            {title}
+          </Typography>
           <Stack
             direction={'row'}
             alignItems={'center'}

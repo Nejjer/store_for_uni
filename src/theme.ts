@@ -45,6 +45,13 @@ export const Theme = createTheme({
         },
       },
     },
+    MuiModal: {
+      styleOverrides: {
+        root: {
+          border: 'none',
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

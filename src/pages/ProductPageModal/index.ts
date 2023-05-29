@@ -1,0 +1,1 @@
+export {ProductPageModal} from './ProductPageModal'

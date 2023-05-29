@@ -49,6 +49,10 @@ export class ShopStore {
     return this._filterCategory;
   }
 
+  public getProductById(id: number) {
+    return this.allProducts.find((item) => item.id === id);
+  }
+
   private async fetchProduct() {
     runInAction(() => {
       this._loading = true;

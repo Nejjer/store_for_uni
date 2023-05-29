@@ -32,30 +32,31 @@ const Header: FC = (props) => {
           spacing={3}
           justifyContent={'flex-end'}
         >
-          {shopStore.cart.length !== 0 && (
-            <CartModal
-              open={!!anchorElForCart}
-              anchorEl={anchorElForCart}
-              onClose={() => setAnchorElForCart(null)}
-            />
-          )}
-          {shopStore.favoriteIds.length !== 0 && (
-            <FavoriteModal
-              open={!!anchorElForFavorite}
-              anchorEl={anchorElForFavorite}
-              onClose={() => setAnchorElForFavorite(null)}
-            />
-          )}
+          <CartModal
+            open={!!anchorElForCart}
+            anchorEl={anchorElForCart}
+            onClose={() => setAnchorElForCart(null)}
+          />
+          <FavoriteModal
+            open={!!anchorElForFavorite}
+            anchorEl={anchorElForFavorite}
+            onClose={() => setAnchorElForFavorite(null)}
+          />
           <Badge
             badgeContent={shopStore.favoriteIds.length}
             color={'primary'}
             className={classes.badge}
-            onClick={(e) => setAnchorElForFavorite(e.currentTarget)}
+            onClick={(e) =>
+              shopStore.favoriteIds.length !== 0 &&
+              setAnchorElForFavorite(e.currentTarget)
+            }
           >
             <GradeIcon sx={{ fontSize: 50 }} fontSize={'large'} />
           </Badge>
           <Badge
-            onClick={(e) => setAnchorElForCart(e.currentTarget)}
+            onClick={(e) =>
+              shopStore.cart.length !== 0 && setAnchorElForCart(e.currentTarget)
+            }
             badgeContent={shopStore.countItemsInCart}
             color={'primary'}
             className={classes.badge}
