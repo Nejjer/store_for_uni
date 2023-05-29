@@ -1,5 +1,13 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
-import { Box, Modal, Paper, Rating, Stack, Typography } from '@mui/material';
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
+import {
+  Box,
+  Modal,
+  Paper,
+  Rating,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { observer } from 'mobx-react';
 import {
   AppStoreContext,
@@ -22,6 +30,24 @@ const ProductPageModal: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const renderSkeleton = useCallback(
+    () => (
+      <Paper sx={{ padding: 5 }}>
+        <Stack direction={'row'} spacing={4}>
+          <Box flexBasis={'30%'}>
+            <Skeleton width={'100%'} height={280} />
+          </Box>
+          <Stack flexBasis={'60%'} spacing={2}>
+            <Skeleton height={76} />
+            <Skeleton height={100} />
+            <Skeleton height={50} />
+          </Stack>
+        </Stack>
+      </Paper>
+    ),
+    []
+  );
+
   useEffect(() => {
     const idFromParam = new URL(window.location.href).searchParams.get(
       'productId'
@@ -31,55 +57,73 @@ const ProductPageModal: FC = () => {
 
   useEffect(() => {
     setProduct(null);
+    setIsLoading(true);
     (async () => {
       id && setProduct(await productApi.getProduct(id));
+      setIsLoading(false);
     })();
   }, [id]);
 
-  return (
-    <Modal open={!!id} onClose={() => navigate('/')}>
-      <div className={classes.container}>
-        {product ? (
-          <Paper sx={{ padding: 5 }}>
-            <Stack spacing={4} direction={'row'}>
-              <Box flexBasis={'30%'}>
-                <img
-                  src={product.image}
-                  style={{ borderRadius: BORDER_RADIUS.normal, width: '100%' }}
-                  alt="КартинОчка"
-                />
-              </Box>
-              <Stack
-                justifyContent={'space-between'}
-                spacing={2}
-                flexBasis={'60%'}
-              >
-                <Stack spacing={2}>
-                  <Typography variant={'h2'}>{product.title}</Typography>
-                  <Typography variant={'body1'}>
-                    {product.description}
-                  </Typography>
-                </Stack>
+  console.log(isLoading);
+
+  const render = useCallback(() => {
+    switch (true) {
+      case !product && isLoading:
+        return renderSkeleton();
+      case !!product:
+        return (
+          product && (
+            <Paper sx={{ padding: 5 }}>
+              <Stack spacing={4} direction={'row'}>
+                <Box flexBasis={'30%'}>
+                  <img
+                    src={product.image}
+                    style={{
+                      borderRadius: BORDER_RADIUS.normal,
+                      width: '100%',
+                    }}
+                    alt="КартинОчка"
+                  />
+                </Box>
                 <Stack
-                  direction={'row'}
-                  spacing={2}
-                  alignItems={'center'}
                   justifyContent={'space-between'}
+                  spacing={2}
+                  flexBasis={'60%'}
                 >
-                  <Rating value={product.rating.rate} readOnly />
-                  <BuyButton productId={product.id} />
+                  <Stack spacing={2}>
+                    <Typography variant={'h2'}>{product.title}</Typography>
+                    <Typography variant={'body1'}>
+                      {product.description}
+                    </Typography>
+                  </Stack>
+                  <Stack
+                    direction={'row'}
+                    spacing={2}
+                    alignItems={'center'}
+                    justifyContent={'space-between'}
+                  >
+                    <Rating value={product.rating.rate} readOnly />
+                    <BuyButton productId={product.id} />
+                  </Stack>
                 </Stack>
               </Stack>
-            </Stack>
-          </Paper>
-        ) : (
+            </Paper>
+          )
+        );
+      case !product:
+        return (
           <Paper sx={{ padding: 5 }}>
             <Typography variant={'h3'} textAlign={'center'}>
               Товар не найден😞
             </Typography>
           </Paper>
-        )}
-      </div>
+        );
+    }
+  }, [product, isLoading]);
+
+  return (
+    <Modal open={!!id} onClose={() => navigate('/')}>
+      <div className={classes.container}>{render()}</div>
     </Modal>
   );
 };
