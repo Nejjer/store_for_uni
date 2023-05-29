@@ -34,7 +34,7 @@ const ProductPageModal: FC = () => {
     () => (
       <Paper sx={{ padding: 5 }}>
         <Stack direction={'row'} spacing={4}>
-          <Box flexBasis={'30%'}>
+          <Box flexBasis={'40%'}>
             <Skeleton width={'100%'} height={280} />
           </Box>
           <Stack flexBasis={'60%'} spacing={2}>
@@ -64,8 +64,6 @@ const ProductPageModal: FC = () => {
     })();
   }, [id]);
 
-  console.log(isLoading);
-
   const render = useCallback(() => {
     switch (true) {
       case !product && isLoading:
@@ -75,7 +73,7 @@ const ProductPageModal: FC = () => {
           product && (
             <Paper sx={{ padding: 5 }}>
               <Stack spacing={4} direction={'row'}>
-                <Box flexBasis={'30%'}>
+                <Box flexBasis={'40%'}>
                   <img
                     src={product.image}
                     style={{

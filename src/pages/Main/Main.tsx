@@ -5,17 +5,18 @@ import {
   StoreCtx,
 } from '../../components/WithStore/WithStore';
 import { ProductCard } from '../../components/ProductCard';
-import { Container, Skeleton, Stack } from '@mui/material';
+import { Container, Skeleton, Snackbar, Stack } from '@mui/material';
 import { Header } from '../../components/Header';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { HeaderMenu } from '../../components/HeaderMenu';
 import { ProductPageModal } from '../ProductPageModal';
+import { SNACKBAR_DELAY } from '../../stores/SnackbarStore';
 
 interface MainProps {}
 
 const Main: FC<MainProps> = () => {
   const {
-    appStore: { shopStore },
+    appStore: { shopStore, snackbarStore },
   } = useContext<AppStoreContext>(StoreCtx);
 
   const renderSkeleton = useCallback(
@@ -45,6 +46,12 @@ const Main: FC<MainProps> = () => {
           </Grid2>
         </Stack>
       </Container>
+      <Snackbar
+        open={snackbarStore.isOpen}
+        autoHideDuration={SNACKBAR_DELAY}
+        onClose={() => snackbarStore.onClose()}
+        message={snackbarStore.message}
+      />
     </>
   );
 };
